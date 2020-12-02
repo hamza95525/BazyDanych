@@ -1,0 +1,18 @@
+-- Utworzenie bazy
+
+CREATE DATABASE cwiczenia7
+\c cwiczenia7
+CREATE EXTENSION postgis_raster;
+
+-- Przywrócenie struktury bazy danych
+
+Wcześniej dodano katalog PostgreSQL do zmiennej środowiskowej PATH. W cmd:
+pg_restore -U postgres -d cwiczenia7 -1 <ścieżka do postgis_raster.backup>
+
+-- lokalizacja: PostgreSQL\13\bin. Wczytywanie plików:
+
+raster2pgsql -s 3763 -N -32767 -t 100x100 -I -C -M -d <ścieżka do srtm_1arc_v3.tif> rasters.dem | psql -d cwiczenia7 -U postgres
+raster2pgsql -s 3763 -N -32767 -t 128x128 -I -C -M -d <ścieżka do Landsat8_L1TP_RGBN.tif> rasters.dem | psql -d cwiczenia7 -U postgres
+
+--- sql shell:
+ALTER SCHEMA schema_name RENAME to sultanov;
